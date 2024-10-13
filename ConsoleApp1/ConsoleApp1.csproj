@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="DAOModule">
+      <HintPath>..\DAOModule\bin\Debug\net8.0\DAOModule.dll</HintPath>
+    </Reference>
+    <Reference Include="EMSModel">
+      <HintPath>..\..\OOPSDemo\ClassLibrary1\bin\Debug\net8.0\EMSModel.dll</HintPath>
+    </Reference>
+    <Reference Include="EMSModule">
+      <HintPath>..\EMSModule\bin\Debug\net8.0\EMSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="ExceptionModule">
+      <HintPath>..\ExceptionModule\bin\Debug\net8.0\ExceptionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UtilModule">
+      <HintPath>..\UtilModule\bin\Debug\net8.0\UtilModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
