@@ -20,83 +20,91 @@ internal class Program
         //int _weight = Convert.ToInt32(Console.ReadLine());
         //ParcelCategory(_weight);
 
+        //ANS 3
+        //Console.Write("Select 1. for User and 2. for Employee: ");
+        //int choice = Convert.ToInt32(Console.ReadLine());
+        //if (choice == 1)
+        //{
+        //    Uservalidation();
+        //}
+        //else if (choice == 2)
+        //{
+        //    Empvalidation();
+        //}
+        //else
+        //{
+        //    Console.WriteLine("Invalid Choice");
+        //}
+
+        //ANS 7
+        //TrackingWithLocationUpdate();
+
         //ANS 10
         //Console.Write("Enter the Data: ");
         //string _Data = Console.ReadLine();
         //Console.Write("Enter the Details: ");
         //string _Detail = Console.ReadLine();
         //ValidateCustomerInfo(_Data, _Detail);
-        //object[,] newarr = { (1, "Hello"), (2, "World") };
-        //foreach (var item in newarr)
-        //{
-        //    Console.WriteLine(item);
-        //}
 
-        //ANS 7
-        //TrackingWithLocationUpdate();
 
-        User user = new User();
-        Console.WriteLine("Enter UserId:");
-        user.userID = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine($"User ID is :{user.userID}");
 
-        Console.WriteLine("Enter Empid");
-        user.Empid = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine($"You entered empid=  {user.Empid}");
 
-        //int p1=Int32.Parse(s3);
+
+
+
+
 
         Console.Read();
 
     }
-    public static void ValidateCustomerInfo(string data, string detail)
-    {
-        if (detail.ToLower() == "name")
-        {
-            foreach (char c in data)
-            {
-                if (!char.IsLetter(c)  && (!char.IsUpper(data[0])))
-                {
-                    Console.WriteLine("Data is not name");
-                    break;
-                }
-            }
-            
-        }
-        else if (detail.ToLower() == "address")
-        {
-            foreach (char c in data)
-            {
-                if (!char.IsLetterOrDigit(c) && c!=' ')
-                {
-                    Console.WriteLine("Data is not address");
-                    break;
-                }
-            }
-            Console.WriteLine("Data is address");
-        }
-        else if (detail.ToLower() == "phone")
-        {
-            if (data.Length != 10) Console.WriteLine("Data is not Phone number"); ;
+    //public static void ValidateCustomerInfo(string data, string detail)
+    //{
+    //    if (detail.ToLower() == "name")
+    //    {
+    //        foreach (char c in data)
+    //        {
+    //            if (!char.IsLetter(c)  && (!char.IsUpper(data[0])))
+    //            {
+    //                Console.WriteLine("Data is not name");
+    //                break;
+    //            }
+    //        }
 
-            foreach (char i in data)
-            {
-                if (Char.IsDigit(i))
-                {
-                    continue;
-                }
-                else
-                {
-                    if (!char.IsDigit(data[i])) Console.WriteLine("Data is not Phone Number");
-                }
-            }
-            Console.WriteLine("Data is Phone number");
-        }
-        else
-        {
-            Console.WriteLine("Invalid data and detail");
-        }
-    }
+    //    }
+    //    else if (detail.ToLower() == "address")
+    //    {
+    //        foreach (char c in data)
+    //        {
+    //            if (!char.IsLetterOrDigit(c) && c!=' ')
+    //            {
+    //                Console.WriteLine("Data is not address");
+    //                break;
+    //            }
+    //        }
+    //        Console.WriteLine("Data is address");
+    //    }
+    //    else if (detail.ToLower() == "phone")
+    //    {
+    //        if (data.Length != 10) Console.WriteLine("Data is not Phone number"); ;
+
+    //        foreach (char i in data)
+    //        {
+    //            if (Char.IsDigit(i))
+    //            {
+    //                continue;
+    //            }
+    //            else
+    //            {
+    //                if (!char.IsDigit(data[i])) Console.WriteLine("Data is not Phone Number");
+    //            }
+    //        }
+    //        Console.WriteLine("Data is Phone number");
+    //    }
+    //    else
+    //    {
+    //        Console.WriteLine("Invalid data and detail");
+    //    }
+    //}
     ////private static void TrackingWithLocationUpdate()
     //{
     //    string[] trackingHistory = new string[5];
@@ -160,8 +168,67 @@ internal class Program
     //    }
     //    else { Console.WriteLine("Invalid Data"); }
     //}
+    private static void Empvalidation()
+    {
+        List<Employee> emp = new List<Employee>();
 
+        emp.Add(new Employee { employeeName = "Harry", password = "H@rry" });
+        emp.Add(new Employee { employeeName = "Ron", password = "R0n" });
+        emp.Add(new Employee { employeeName = "Hermione", password = "Hermi0ne" });
 
+        FindEmp(emp);
+    }
+
+    private static void Uservalidation()
+    {
+        //
+        List<User> users = new List<User>();
+
+        users.Add(new User { userName = "John", password = "John@123" });
+        users.Add(new User { userName = "Sam", password = "S@m" });
+        users.Add(new User { userName = "Tom", password = "Tom@553" });
+        users.Add(new User { userName = "Jerry", password = "Jerry@007" });
+        FindUser(users);
+
+    }
+    private static void FindEmp(List<Employee> employees)
+    {
+        Console.Write("Enter the Employee name: ");
+        Employee employee = new Employee();
+        employee.employeeName = Console.ReadLine();
+        Console.Write("Enter the Password: ");
+        employee.password = Console.ReadLine();
+
+        Employee foundorNot = employees.Find(e => e.employeeName == employee.employeeName && e.password == employee.password);
+
+        if (foundorNot == null)
+        {
+            Console.WriteLine("Employee not Found");
+        }
+        else
+        {
+            Console.WriteLine("Employee Found");
+        }
+    }
+    private static void FindUser(List<User> users)
+    {
+        Console.Write("Enter the Username: ");
+        User user = new User();
+        user.userName = Console.ReadLine();
+        Console.Write("Enter the Password: ");
+        user.password = Console.ReadLine();
+
+        User foundorNot = users.Find(u => u.userName == user.userName && u.password == user.password);
+
+        if (foundorNot == null) {
+            Console.WriteLine("User not Found");
+        }
+        else
+        {
+            Console.WriteLine("User Found");
+        }
+    }
+    
     private static void ParcelCategory(int _weight)
     {
         switch (_weight)

@@ -1,43 +1,16 @@
-﻿namespace EMSModule
+﻿using System.Reflection.Metadata;
+
+namespace EMSModule
 {
     public class User
     {
-        private int _userid;
-        public int userID
-        {
-            set
-            {
-                if ((value != 0) && !(value < 0))
-                    _userid = value;
-                else
-                    Environment.Exit(1);
-            }
-            get
-            {
-                return _userid;
-            }
-        }
-        private int _empid;
-        public int Empid
-        {
-            set
-            {
-                if ((value != 0) && !(value < 0))
-                    _empid = value;
-                else
-                    Environment.Exit(1);
-            }
-            get
-            {
-                return _empid;
-            }
-        }
-
+        public int userID{ get; set; }
         public string userName { get; set; }
         public string email { get; set; }
         public string password { get; set; }
         public int contactNumber { get; set; }
         public string address { get; set; }
+
     }
 
     public class  Courier
@@ -73,27 +46,5 @@
         public DateTime PaymentDate { get; set; }
     }
 
-    public class uservalidation
-    {
-        public string Username;
-        public string Password;
-
-        public uservalidation(string username, string password)
-        {
-            Username = username;
-            Password = password;
-        }
-
-        public bool CheckUser(string username, string password)
-        {
-            if (Username == username && Password == password)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    
 }
