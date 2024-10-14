@@ -4,6 +4,7 @@ using ExceptionModule;
 using UtilModule;
 using System.Security.Cryptography.X509Certificates;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Serialization;
 internal class Program
 {
     private static void Main(string[] args)
@@ -39,6 +40,9 @@ internal class Program
         //ANS 7
         //TrackingWithLocationUpdate();
 
+        //ANS 9
+        //ParcelTracking();
+
         //ANS 10
         //Console.Write("Enter the Data: ");
         //string _Data = Console.ReadLine();
@@ -46,17 +50,21 @@ internal class Program
         //string _Detail = Console.ReadLine();
         //ValidateCustomerInfo(_Data, _Detail);
 
+        //ANS 11
+        //AddressFormatting();
 
+        //ANS 12
+        //OrderConfirmationEmail();
 
-
-
-
-
+        //ANS 13
 
 
         Console.Read();
 
     }
+
+    
+
     //public static void ValidateCustomerInfo(string data, string detail)
     //{
     //    if (detail.ToLower() == "name")
@@ -168,20 +176,19 @@ internal class Program
     //    }
     //    else { Console.WriteLine("Invalid Data"); }
     //}
-    private static void Empvalidation()
-    {
-        List<Employee> emp = new List<Employee>();
+    //private static void Empvalidation()
+    //{
+    //    List<Employee> emp = new List<Employee>();
 
-        emp.Add(new Employee { employeeName = "Harry", password = "H@rry" });
-        emp.Add(new Employee { employeeName = "Ron", password = "R0n" });
-        emp.Add(new Employee { employeeName = "Hermione", password = "Hermi0ne" });
+    //    emp.Add(new Employee { employeeName = "Harry", password = "H@rry" });
+    //    emp.Add(new Employee { employeeName = "Ron", password = "R0n" });
+    //    emp.Add(new Employee { employeeName = "Hermione", password = "Hermi0ne" });
 
-        FindEmp(emp);
-    }
-
+    //    FindEmp(emp);
+    //}
     private static void Uservalidation()
     {
-        //
+        
         List<User> users = new List<User>();
 
         users.Add(new User { userName = "John", password = "John@123" });
@@ -220,7 +227,8 @@ internal class Program
 
         User foundorNot = users.Find(u => u.userName == user.userName && u.password == user.password);
 
-        if (foundorNot == null) {
+        if (foundorNot == null)
+        {
             Console.WriteLine("User not Found");
         }
         else
@@ -228,7 +236,7 @@ internal class Program
             Console.WriteLine("User Found");
         }
     }
-    
+
     private static void ParcelCategory(int _weight)
     {
         switch (_weight)
@@ -268,7 +276,132 @@ internal class Program
             Console.WriteLine("Invalid Status");
         }
     }
-    
+
+    private static void ParcelTracking()
+    {
+        string[,] trackingData = new string[,]
+        {
+            {"TRK001","In Transit"},
+            {"TRK002","Delivered"},
+            {"TRK003","Out for Delivery"},
+            {"TRK004","Delivered"},
+            {"TRK005","In Transit"},
+            {"TRK006","Out for Delivery"}
+        };
+
+        Console.Write("Enter the parcel tracking number (Like : TRK003): ");
+        string trackingNumber = Console.ReadLine();
+
+        bool found = false;
+        for (int i = 0; i < trackingData.GetLength(0); i++)
+        {
+            if (trackingData[i, 0] == trackingNumber)
+            {
+                found = true;
+                string status = trackingData[i, 1];
+                if (status == "In Transit")
+                {
+                    Console.WriteLine("Parcel is currently in transit.");
+                }
+                else if (status == "Out for Delivery")
+                {
+                    Console.WriteLine("Parcel is out for delivery. It should arrive soon.");
+                }
+                else if (status == "Delivered")
+                {
+                    Console.WriteLine("Parcel has been delivered.");
+                }
+                else
+                {
+                    Console.WriteLine("Unknown status.");
+                }
+                break;
+            }
+        }
+        if (!found)
+        {
+            Console.WriteLine("Tracking Number is Invalid");
+        }
+    }
+
+    public static void AddressFormatting()
+    {
+        List<string> address = new List<string>();
+
+        Console.Write("Enter the amount of address you want to add: ");
+        int n = Convert.ToInt32(Console.ReadLine());
+        for (int i = 0; i < n; i++)
+        {
+            Console.Write($"Enter the street {i + 1}: ");
+            string street = Console.ReadLine();
+
+            Console.Write($"Enter the city {i + 1}: ");
+            string city = Console.ReadLine();
+
+            Console.Write($"Enter the state {i + 1}: ");
+            string state = Console.ReadLine();
+
+            Console.Write($"Enter the zip code {i + 1}: ");
+            int zip = Convert.ToInt32(Console.ReadLine());
+
+            string formattedStreet = Capitalize(street);
+            string formattedCity = Capitalize(city);
+            string formattedState = Capitalize(state);
+
+            string formattedAddress = $"{formattedStreet}, {formattedCity}, {formattedState} - {zip}";
+
+            address.Add(formattedAddress);
+        }
+        Console.WriteLine("All the Address are: ");
+        for (int i=0; i < address.Count; i++)
+        {
+            Console.WriteLine($"{address[i]}");
+        }
+    }
+    public static string Capitalize(string str)
+    {
+        string[] words = str.Split(' ');
+        string result = "";
+        foreach (string word in words)
+        {
+            result += char.ToUpper(word[0]) + word.Substring(1) + " ";
+        }
+        return result;
+    }
+
+    public static string GenerateOrderConfirmationEmail(string customerName, string orderNumber, string deliveryAddress, string deliveryDate)
+    {
+        string email = $"Dear {customerName},\n\n" +
+                       $"Thank you for your order! Your order number is {orderNumber}.\n\n" +
+                       $"Delivery Address:\n{deliveryAddress}\n\n" +
+                       $"Your order is expected to be delivered on {deliveryDate}.\n\n" +
+                       "If you have any questions, feel free to contact our support team.\n\n" +
+                       "Best regards,\n" +
+                       "The Courier Company Team";
+
+        return email;
+    }
+    private static void OrderConfirmationEmail()
+    {
+        Console.WriteLine("Enter Customer Name:");
+        string customerName = Console.ReadLine();
+
+        Console.WriteLine("Enter Order Number:");
+        string orderNumber = Console.ReadLine();
+
+        Console.WriteLine("Enter Delivery Address (Street, City, State, Zip Code):");
+        string deliveryAddress = Console.ReadLine();
+
+        Console.WriteLine("Enter Expected Delivery Date (MM/DD/YYYY):");
+        string deliveryDate = Console.ReadLine();
+
+        // Step 2: Generate the order confirmation email
+        string emailBody = GenerateOrderConfirmationEmail(customerName, orderNumber, deliveryAddress, deliveryDate);
+
+        // Step 3: Display the generated email
+        Console.WriteLine("\n--- Order Confirmation Email ---");
+        Console.WriteLine(emailBody);
+    }
 
 
 

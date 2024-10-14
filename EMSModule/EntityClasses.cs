@@ -37,14 +37,27 @@ namespace EMSModule
         public string role { get; set; }
         public double salary { get; set; }
     }
+    public class Location
+    {
+        public int LocationID { get; set; }
+        public string LocationName { get; set; }
+        public string LocationAddress { get; set; }
+    }
 
-    public class Payment
+    public class CourierCompany
+    {
+        public string companyName { get; set; }
+        public List<Courier> couriersDetails { get; set; }
+        public List<Employee> employeesDetails { get; set; }
+        public List<Location> locationsDetails { get; set; }
+
+    }
+        public class Payment
     {
         public long PaymentID { get; set; }
         public long CourierID { get; set; }
         public double amount { get; set; }
         public DateTime PaymentDate { get; set; }
     }
-
     
 }
