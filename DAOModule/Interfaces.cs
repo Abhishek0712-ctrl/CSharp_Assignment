@@ -7,11 +7,11 @@ namespace DAOModule
         public String TrackingNumber { get; set; }
         string placeOrder(Courier courierObj);
 
-        string getOrderStatus(string trackingNumber);
+        string getOrderStatus(int trackingNumber);
 
-        string cancelOrder(string trackingNumber);
+        bool cancelOrder(string trackingNumber);
 
-        string getAssignedOrder(Employee employeeID);
+        List<Courier> getAssignedOrder(Employee employeeID);
     }
     public interface ICourierAdminService {
         public int addCourierStaff(Employee employeename,Employee contactNumber);

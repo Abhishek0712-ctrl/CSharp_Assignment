@@ -9,34 +9,34 @@ namespace DAOModule
 {
     public class CourierUserServiceImpl : ICourierUserService
     {
-       private Courier companyObj;
+       private CourierCompany _companyObj;
+
         public string TrackingNumber { get; set; }
 
         public string placeOrder(Courier courierObj)
         {
-            companyObj = courierObj;
-            return "Order placed successfully";
+            
+            return TrackingNumber;
         }
         public string getOrderStatus(string trackingNumber)
         {
-            if (companyObj.trackingNumber == trackingNumber)
+            string courierStatus = null;
+            //   throw new NotImplementedException();
+            for (int i = 0; i <= _companyObj.couriercompanies.Count; i++)
             {
-                return companyObj.status;
+                List<Courier> couriers = _companyObj.couriercompanies[i].couriers;
+
+                Courier courierdata = couriers.Find(c => c.trackingNumber == trackingNumber);
+                courierStatus = courierdata.status;
             }
-            return "Invalid tracking number";
-        }
-        public string getStatus(string trackingNumber) {
-            if (companyObj.trackingNumber == trackingNumber)
-            {
-                return companyObj.status;
-            }
-            return "Invalid tracking number";
+            return courierStatus;
+
         }
         public string cancelOrder(string trackingNumber)
         {
-            if (companyObj.trackingNumber == trackingNumber)
+            if (_companyObj.couriersDetails.TrackingNumber == trackingNumber)
             {
-                companyObj.status = "Cancelled";
+                _companyObj.status = "Cancelled";
                 return "Order cancelled successfully";
             }
             return "Invalid tracking number";
@@ -57,5 +57,35 @@ namespace DAOModule
             return this.addCourierStaff(employeename, contactNumber);
         }
     }
-    //public class CourierAdminServiceCollectionImpl : ICourierAdminService{ }
+
+    public class CourierUserServiceCollectionImpl : ICourierUserService
+    {
+        public static CourierCompanyCollection companyObj;
+        public string TrackingNumber { get; set; }
+
+        public string placeOrder(Courier courierObj)
+        {
+            return TrackingNumber;
+        }
+
+        public string getOrderStatus(int trackingNumber)
+        {
+            return "status";
+        }
+
+        public bool cancelOrder(string trackingNumber)
+        {
+            return true;
+        }
+
+        public List<Courier> getAssignedOrder(Employee employeeID)
+        {
+            return new List<Courier>();
+        }
+    }
+    public class CourierAdminServiceCollectionImpl : CourierUserServiceCollectionImpl,ICourierAdminService
+    {
+
+    }
+
 }

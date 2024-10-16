@@ -57,13 +57,57 @@ internal class Program
         //OrderConfirmationEmail();
 
         //ANS 13
+        //Console.WriteLine("Enter the Distance (in kilometers):");
+        //string distanceInput = Console.ReadLine();
+        //double dist;
+
+        //if (!double.TryParse(distanceInput, out dist) || dist <= 0)
+        //{
+        //    Console.WriteLine("Invalid distance entered. Please enter a positive number.");
+        //    return;
+        //}
+
+        //Console.WriteLine("Enter the weight of the parcel:");
+        //string weightInput = Console.ReadLine();
+        //double weight;
+
+        //if (!double.TryParse(weightInput, out weight) || weight <= 0)
+        //{
+        //    Console.WriteLine("Invalid weight entered. Please enter a positive number.");
+        //    return;
+        //}
+
+        //CalculateShippingCost(dist, weight);
+
+
+        //ANS 14
+        //Console.Write("Enter the lenthg of password you want: ");
+        //int passwordLength = Convert.ToInt32(Console.ReadLine());
+        //string randomPassword;
+        //randomPassword = CreateRandomPassword(passwordLength);
+        //Console.WriteLine(randomPassword);
+
+
+
+
+        //ANS 15
+        //SimilarAddress();
+
+
 
 
         Console.Read();
 
     }
+    public static double CalculateShippingCost(double distance, double weight)
+    {
+        const double baseRate = 50.00; // Base shipping cost
+        const double ratePerKm = 10.00; // Cost per kilometer
+        const double ratePerKg = 15.00; // Cost per kilogram
 
-    
+        double totalCost = baseRate + (ratePerKm * distance) + (ratePerKg * weight);
+        return totalCost;
+    }
 
     //public static void ValidateCustomerInfo(string data, string detail)
     //{
@@ -188,7 +232,7 @@ internal class Program
     //}
     private static void Uservalidation()
     {
-        
+
         List<User> users = new List<User>();
 
         users.Add(new User { userName = "John", password = "John@123" });
@@ -198,6 +242,16 @@ internal class Program
         FindUser(users);
 
     }
+    public static void Empvalidation() {
+        List<Employee> employees = new List<Employee>();
+
+        employees.Add(new Employee { employeeName = "Harry", password = "H@rry" });
+        employees.Add(new Employee { employeeName = "Ron", password = "R0n" });
+        employees.Add(new Employee { employeeName = "Hermione", password = "Hermi0ne" });
+
+        FindEmp(employees);
+    }
+
     private static void FindEmp(List<Employee> employees)
     {
         Console.Write("Enter the Employee name: ");
@@ -353,7 +407,7 @@ internal class Program
             address.Add(formattedAddress);
         }
         Console.WriteLine("All the Address are: ");
-        for (int i=0; i < address.Count; i++)
+        for (int i = 0; i < address.Count; i++)
         {
             Console.WriteLine($"{address[i]}");
         }
@@ -395,14 +449,86 @@ internal class Program
         Console.WriteLine("Enter Expected Delivery Date (MM/DD/YYYY):");
         string deliveryDate = Console.ReadLine();
 
-        // Step 2: Generate the order confirmation email
         string emailBody = GenerateOrderConfirmationEmail(customerName, orderNumber, deliveryAddress, deliveryDate);
 
-        // Step 3: Display the generated email
         Console.WriteLine("\n--- Order Confirmation Email ---");
         Console.WriteLine(emailBody);
     }
 
+    public static List<string> FindSimilarAddresses(string inputAddress, List<string> addresses)
+    {
+        List<string> similarAddresses = new List<string>();
 
+        inputAddress = inputAddress.Trim().ToLower();
 
+        foreach (var address in addresses)
+        {
+            string normalizedAddress = address.Trim().ToLower();
+
+            if (normalizedAddress == inputAddress)
+            {
+                similarAddresses.Add(address);
+                continue;
+            }
+
+            if (normalizedAddress.Contains(inputAddress) || inputAddress.Contains(normalizedAddress))
+            {
+                similarAddresses.Add(address);
+                continue;
+            }
+
+            if (normalizedAddress.StartsWith(inputAddress) || inputAddress.StartsWith(normalizedAddress) ||
+                normalizedAddress.EndsWith(inputAddress) || inputAddress.EndsWith(normalizedAddress))
+            {
+                similarAddresses.Add(address);
+            }
+        }
+        return similarAddresses;
+    }
+    private static void SimilarAddress()
+    {
+        List<string> addresses = new List<string>
+        {
+            "123 Main St, New York, NY",
+            "456 Elm Street, Los Angeles, CA",
+            "123 Main Street, New York, NY",
+            "789 Oak St, Chicago, IL",
+            "456 ELM STREET, Los Angeles, CA"
+        };
+
+        Console.WriteLine("Enter the address you want to search for similar entries:");
+        string inputAddress = Console.ReadLine();
+
+        List<string> similarAddresses = FindSimilarAddresses(inputAddress, addresses);
+
+        if (similarAddresses.Count > 0)
+        {
+            Console.WriteLine("\nSimilar addresses found:");
+            foreach (var addr in similarAddresses)
+            {
+                Console.WriteLine(addr);
+            }
+        }
+        else
+        {
+            Console.WriteLine("No similar addresses found.");
+        }
+    }
+
+    private static string CreateRandomPassword(int passwordLength)
+    {
+        string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
+        char[] chars = new char[passwordLength];
+        Random rd = new Random();
+
+        for (int i = 0; i < passwordLength; i++)
+        {
+            chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+        }
+
+        return new string(chars);
+    }
+
+    
 }
+
