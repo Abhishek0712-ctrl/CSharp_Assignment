@@ -1,7 +1,7 @@
 ﻿using EMSModule;
-using DAOModule;
 using ExceptionModule;
 using UtilModule;
+using HelperLibrary;
 using System.Security.Cryptography.X509Certificates;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Xml.Serialization;
@@ -36,6 +36,19 @@ internal class Program
         //{
         //    Console.WriteLine("Invalid Choice");
         //}
+
+
+        //ANS 5
+        //List<(int orderid, int customerid, string orderdetails)> orders = new List<(int, int, string)>
+        //    {
+        //        (1, 101, "Courier from City A to City B"),
+        //        (2, 102, "Courier from City C to City D"),
+        //        (3, 101, "Courier from City E to City F"),
+        //        (4, 103, "Courier from City G to City H"),
+        //        (5, 101, "Courier from City I to City J")
+        //    };
+        //CountOrders(orders);
+
 
         //ANS 7
         //TrackingWithLocationUpdate();
@@ -93,13 +106,77 @@ internal class Program
         //ANS 15
         //SimilarAddress();
 
-
-
+        Courier courier = new Courier();
+        HelperClass help = new HelperClass();
+        Console.Write("Enter the Tracking Number: ");
+        courier.trackingNumber = Console.ReadLine();
+        bool status = help.deleteCourier(courier.trackingNumber);
+        if (status)
+        {
+            Console.WriteLine("Order Deleted!!");
+        }
+        else
+        {
+            Console.WriteLine("Order not deleted :( ");
+        }
 
         Console.Read();
 
     }
-    public static double CalculateShippingCost(double distance, double weight)
+
+    private static void CountOrders(List<(int orderid, int customerid, string orderdetails)> orders)
+    {
+        Console.WriteLine("Enter CustomerID to display their orders:");
+        int customerid = int.Parse(Console.ReadLine());
+
+        Console.WriteLine($"Orders for CustomerID {customerid}: ");
+        int count = 0;
+        foreach (var order in orders)
+        {
+            if (order.customerid == customerid)
+            {
+                Console.WriteLine($"Order ID: {order.orderid}, Details: {order.orderdetails}");
+                count++;
+            }
+        }
+
+        if (count == 0)
+        {
+            Console.WriteLine("No order");
+        }
+    }
+
+    //ANS 8
+    static (string Name, double Latitude, double Longitude, bool IsAvailable)? FindNearestCourier(
+        (string Name, double Latitude, double Longitude, bool IsAvailable)[] couriers,
+        double userLat, double userLon)
+
+    {
+        (string Name, double Latitude, double Longitude, bool IsAvailable)? nearest = null;  
+        double minDistance = double.MaxValue;  
+
+        foreach (var courier in couriers)  
+        {
+            if (!courier.IsAvailable)  
+                continue;
+
+            
+            double distance = Math.Sqrt(
+                Math.Pow(courier.Latitude - userLat, 2) +
+                Math.Pow(courier.Longitude - userLon, 2));
+
+            
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearest = courier;
+            }
+        }
+
+        return nearest;
+        
+    }
+        public static double CalculateShippingCost(double distance, double weight)
     {
         const double baseRate = 50.00; // Base shipping cost
         const double ratePerKm = 10.00; // Cost per kilometer

@@ -1,9 +1,15 @@
 ﻿using EMSModule;
+using UtilModule;
+using ExceptionModule;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using System.Data.Common;
 
 namespace DAOModule
 {
@@ -11,6 +17,7 @@ namespace DAOModule
     {
        private CourierCompany _companyObj;
 
+        Courier courier = new Courier();
         public string TrackingNumber { get; set; }
 
         public string placeOrder(Courier courierObj)
@@ -20,34 +27,64 @@ namespace DAOModule
         }
         public string getOrderStatus(string trackingNumber)
         {
-            string courierStatus = null;
-            //   throw new NotImplementedException();
-            for (int i = 0; i <= _companyObj.couriercompanies.Count; i++)
-            {
-                List<Courier> couriers = _companyObj.couriercompanies[i].couriers;
 
-                Courier courierdata = couriers.Find(c => c.trackingNumber == trackingNumber);
-                courierStatus = courierdata.status;
-            }
-            return courierStatus;
+
+            return "None";
+            //throw new NotImplementedException();
+            //for (int i = 0; i <= _companyObj.couriercompanies.Count; i++)
+            //{
+            //    List<Courier> couriers = _companyObj.couriercompanies[i].couriers;
+
+            //    Courier courierdata = couriers.Find(c => c.trackingNumber == trackingNumber);
+            //    courierStatus = courierdata.status;
+            //}
+            //return courierStatus;
 
         }
-        public string cancelOrder(string trackingNumber)
+        public bool RemoveOrder(string trackingNumber)
         {
-            if (_companyObj.couriersDetails.TrackingNumber == trackingNumber)
-            {
-                _companyObj.status = "Cancelled";
-                return "Order cancelled successfully";
-            }
-            return "Invalid tracking number";
+            bool status = false;
+            status = cancelOrder(trackingNumber, status);
+            return status;
+
         }
-        public string getAssignedOrder(Employee employeeID)
+        public bool cancelOrder(string trackingNumber,bool status)
         {
-            if (employeeID.role == "Delivery")
+            SqlConnection cn = dbConnection.getConnection();
+            try
             {
-                return "Assigned";
+                SqlCommand cmd = new SqlCommand("delete from courier where trackingNumber=" + trackingNumber, cn);
+                cn.Open();
+                int cnt = cmd.ExecuteNonQuery();
+                if (cnt > 0)
+                {
+                    status = true;
+                }
+                return status;
             }
-            return "Not assigned";
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                cn.Close();
+                cn.Dispose();
+            }
+            
+
+            //if (_companyObj.couriersDetails.TrackingNumber == trackingNumber)
+            //{
+            //    _companyObj.status = "Cancelled";
+            //    return "Order cancelled successfully";
+            //}
+            return true;
+        }
+        public List<Courier> getAssignedOrder(Employee employeeID)
+        {
+            return null;
+
         }
     }
     public class CourierAdminServiceImpl : CourierUserServiceImpl, ICourierAdminService
@@ -58,30 +95,14 @@ namespace DAOModule
         }
     }
 
-    public class CourierUserServiceCollectionImpl : ICourierUserService
+    public class CourierUserServiceCollectionImpl : ICourierAdminService
     {
-        public static CourierCompanyCollection companyObj;
-        public string TrackingNumber { get; set; }
-
-        public string placeOrder(Courier courierObj)
+        private CourierCompany _companyObj;
+        public int addCourierStaff(Employee employeename, Employee contactNumber)
         {
-            return TrackingNumber;
+            return this.addCourierStaff(employeename, contactNumber);
         }
 
-        public string getOrderStatus(int trackingNumber)
-        {
-            return "status";
-        }
-
-        public bool cancelOrder(string trackingNumber)
-        {
-            return true;
-        }
-
-        public List<Courier> getAssignedOrder(Employee employeeID)
-        {
-            return new List<Courier>();
-        }
     }
     public class CourierAdminServiceCollectionImpl : CourierUserServiceCollectionImpl,ICourierAdminService
     {

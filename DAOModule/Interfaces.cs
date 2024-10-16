@@ -9,7 +9,9 @@ namespace DAOModule
 
         string getOrderStatus(int trackingNumber);
 
-        bool cancelOrder(string trackingNumber);
+        bool cancelOrder(string trackingNumber,bool status);
+
+        bool RemoveOrder(string trackingNumber);
 
         List<Courier> getAssignedOrder(Employee employeeID);
     }

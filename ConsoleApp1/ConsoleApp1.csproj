@@ -8,17 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="DAOModule">
-      <HintPath>..\DAOModule\bin\Debug\net8.0\DAOModule.dll</HintPath>
-    </Reference>
-    <Reference Include="EMSModel">
-      <HintPath>..\..\OOPSDemo\ClassLibrary1\bin\Debug\net8.0\EMSModel.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="EMSModule">
       <HintPath>..\EMSModule\bin\Debug\net8.0\EMSModule.dll</HintPath>
     </Reference>
     <Reference Include="ExceptionModule">
       <HintPath>..\ExceptionModule\bin\Debug\net8.0\ExceptionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="HelperLibrary">
+      <HintPath>..\HelperLibrary\bin\Debug\net8.0\HelperLibrary.dll</HintPath>
     </Reference>
     <Reference Include="UtilModule">
       <HintPath>..\UtilModule\bin\Debug\net8.0\UtilModule.dll</HintPath>
